@@ -176,3 +176,45 @@ Anteponer una \ antes del símbolo '\\*'
 
 `:x:`:x:
 
+## Table of contents
+TOC
+
+- Run command "Create Table of Contents" (in the VS Code Command Palette) to insert a new table of contents.
+
+- The TOC is automatically updated on file save by default. To disable, please change the toc.updateOnSave option.
+
+- The indentation type (tab or spaces) of TOC can be configured per file. Find the setting in the right bottom corner of VS Code's status bar.
+
+Note: Be sure to also check the list.indentationSize option.
+
+- To make TOC compatible with GitHub or GitLab, set option slugifyMode accordingly
+
+> Three ways to control which headings are present in the TOC:
+
+
+>1. Add <!-- omit from toc --> at the end of a heading to ignore it in TOC
+(It can also be placed above a heading)
+
+>2. Use toc.levels setting.
+
+>3. You can also use the toc.omittedFromToc setting to omit some headings (and their subheadings) from TOC:
+
+~~~
+// In your settings.json
+"markdown.extension.toc.omittedFromToc": {
+  // Use a path relative to your workspace.
+  "README.md": [
+      "# Introduction",
+      "## Also omitted",
+  ],
+  // Or an absolute path for standalone files.
+  "/home/foo/Documents/todo-list.md": [
+    "## Shame list (I'll never do these)",
+  ]
+}
+~~~
+Note:
+
+- Setext headings (underlined with === or ---) can also be omitted, just put their # and ## versions in the setting, respectively.
+  
+- When omitting heading, make sure headings within a document are unique. Duplicate headings may lead to unpredictable behavior.

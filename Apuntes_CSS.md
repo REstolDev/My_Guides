@@ -9,6 +9,78 @@
  - [Breakpoints](#breakpoints)
  - [Media Queries](#media-queries)
 
+Of course, I'll include information about the bugs and essential concepts, along with concise examples of key properties:
+
+## **CSS Flexbox Essentials:**
+- **Introduction:** Flexbox simplifies complex layouts and provides flexible alignment and space distribution within a container.
+
+- **Benefits:** Easier alignment and responsive layouts, reordering elements, and creating same-height columns.
+
+- **Main Axis and Cross Axis:** Flex containers have a main axis and cross axis defined by the flex-direction property.
+
+- **Flex Containers and Flex Items:** Set display to flex or inline-flex to create flex containers, with direct children becoming flex items.
+
+### **Key Flex Container Properties:**
+
+- **flex-direction:** Defines the main axis direction (row, column, row-reverse, column-reverse).
+
+   Example: `flex-direction: column;`
+
+- **flex-wrap:** Controls whether items wrap when space is insufficient (wrap, nowrap, wrap-reverse).
+
+   Example: `flex-wrap: wrap;`
+
+- **justify-content:** Aligns items along the main axis (flex-start, flex-end, center, space-between, space-around, space-evenly).
+
+   Example: `justify-content: center;`
+
+- **align-items:** Aligns items along the cross axis (stretch, flex-start, flex-end, center, baseline).
+
+   Example: `align-items: center;`
+
+- **align-content:** Aligns flex lines along the cross axis in a multi-line container.
+
+   Example: `align-content: space-between;`
+
+### **Key Flex Item Properties:**
+
+- **order:** Changes the order of appearance for items based on a numerical value.
+
+   Example: `order: 2;`
+
+- **flex-grow:** Determines how items grow to occupy extra space (a number value).
+
+   Example: `flex-grow: 2;`
+
+- **flex-shrink:** Controls how items shrink when space is insufficient (a number value).
+
+   Example: `flex-shrink: 0;`
+
+- **flex-basis:** Sets the default size of an item (a length value).
+
+   Example: `flex-basis: 50px;`
+
+- **flex:** A shorthand property for flex-grow, flex-shrink, and flex-basis.
+
+   Example: `flex: 2 0 50px;`
+
+**Centering with Flexbox:**
+- To center an element, make the parent element a flex container and set `justify-content` and `align-items` to `center`.
+
+**Flexbox Gaps:**
+- Use the `gap` property to adjust space between flex items, which can take two values for rows and columns separately.
+
+   Example: `gap: 10px 20px;`
+
+### **CSS Flexbox Bugs:**
+- A common example is that some HTML elements cannot act as flex containers. These include the `<button>, <fieldset>, and <summary>`` elements.
+
+>The workaround is to use an element like a div to wrap around the element's children. Then use Flexbox on the wrapper div.
+
+- Workarounds are available, and known bugs can be found in the [Flexbugs repository on GitHub](https://github.com/philipwalton/flexbugs)
+
+>[CSS FLEX extended guide](https://www.freecodecamp.org/news/the-css-flexbox-handbook/#are-there-bugs-in-css-flexbox)
+
 
 ## **Metodología BEM en CSS**
 
