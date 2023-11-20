@@ -16,6 +16,7 @@ Las últimas versiones del CLI de Angular pueden ser instaladas siguiendo los mi
     - [*MENÚ*](#menú)
   - [**Instalar el CLI usando el gestor de paquetes npm**](#instalar-el-cli-usando-el-gestor-de-paquetes-npm)
   - [**Flujo de trabajo básico**](#flujo-de-trabajo-básico)
+    - [Referencia rápida comandos CLI](#referencia-rápida-comandos-cli)
     - [*Ayuda*](#ayuda)
   - [*Crear, construir y servir nuevo proyecto*](#crear-construir-y-servir-nuevo-proyecto)
     - [Crear](#crear)
@@ -28,8 +29,6 @@ Las últimas versiones del CLI de Angular pueden ser instaladas siguiendo los mi
   - [**La sintaxis del lenguaje de comando del CLI**](#la-sintaxis-del-lenguaje-de-comando-del-cli)
     - [Booleanos y opciones enumeradas](#booleanos-y-opciones-enumeradas)
   - [**Command Overview**](#command-overview)
-
- - [](#)
  
 
 ## **Instalar el CLI usando el gestor de paquetes npm**
@@ -40,6 +39,26 @@ Las últimas versiones del CLI de Angular pueden ser instaladas siguiendo los mi
 ## **Flujo de trabajo básico**
 
 Ejecute la herramienta en la línea de comandos a través del ejecutable ng.
+
+### Referencia rápida comandos CLI
+Listado de algunos comandos básicos del CLI de Angular:
+
+| Comando                                      | Descripción                                          |
+| ------------------------------------------- | ---------------------------------------------------- |
+| `ng new nombreProyecto`                     | Crea un nuevo proyecto Angular.                     |
+| `ng serve`                                  | Inicia un servidor de desarrollo para la aplicación. |
+| `ng generate component nombreComponente`   | Genera un nuevo componente.                         |
+| `ng generate service nombreServicio`       | Genera un nuevo servicio.                           |
+| `ng generate module nombreModulo`           | Genera un nuevo módulo.                             |
+| `ng generate directive nombreDirectiva`     | Genera una nueva directiva.                         |
+| `ng generate pipe nombrePipe`               | Genera una nueva tubería (pipe).                    |
+| `ng build`                                 | Compila la aplicación para producción.              |
+| `ng test`                                  | Ejecuta pruebas unitarias.                          |
+| `ng e2e`                                   | Ejecuta pruebas end-to-end.                         |
+| `ng lint`                                  | Analiza el código en busca de problemas.            |
+| `ng help`                                  | Muestra la ayuda para los comandos de Angular CLI. |
+
+Estos son algunos de los comandos más comunes que se utilizan con Angular CLI para crear, desarrollar, compilar y probar aplicaciones Angular. 
  
 ### *Ayuda*
 La ayuda se encuentra disponible en la línea de comandos. Ingrese lo siguiente para listar comandos u opciones para un comando dado (Ejemplo: generate) con una breve descripción.
