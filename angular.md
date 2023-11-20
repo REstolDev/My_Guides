@@ -54,6 +54,40 @@
 - [**Forms**](#forms)
 - [**How to deploy Angular Apps to GitHub Pages (gh-pages)**](#how-to-deploy-angular-apps-to-github-pages-gh-pages)
   - [***Method 2***](#method-2)
+- [**Lazy Loading**](#lazy-loading)
+- [Different Loading Strategies in Angular](#different-loading-strategies-in-angular)
+  - [1. Eager Loading](#1-eager-loading)
+  - [2. Lazy Loading](#2-lazy-loading)
+  - [3. Preloading Strategies](#3-preloading-strategies)
+    - [PreloadAllModules Strategy](#preloadallmodules-strategy)
+    - [Custom Preloading Strategy](#custom-preloading-strategy)
+  - [Understanding Lazy Loading](#understanding-lazy-loading)
+    - [Benefits of Lazy Loading](#benefits-of-lazy-loading)
+  - [Implementation in Angular](#implementation-in-angular)
+    - [Step 1: Setup Routes](#step-1-setup-routes)
+    - [Step 2: Create a Lazy Module](#step-2-create-a-lazy-module)
+    - [Step 3: Routing within Lazy Module](#step-3-routing-within-lazy-module)
+    - [Step 4: Use Lazy Components](#step-4-use-lazy-components)
+  - [Best Practices](#best-practices)
+  - [Conclusion](#conclusion)
+- [**Optimize the Bundle Size**](#optimize-the-bundle-size)
+  - [**Optimize the Bundle Size with Bundle Analyzer**](#optimize-the-bundle-size-with-bundle-analyzer)
+  - [**Optimize the Bundle Size using Source Map Explorer**](#optimize-the-bundle-size-using-source-map-explorer)
+  - [Why?](#why)
+  - [Tools](#tools)
+  - [What is Source Map Explorer?](#what-is-source-map-explorer)
+  - [Why Source Map Explorer?](#why-source-map-explorer)
+  - [Prerequisites](#prerequisites)
+    - [Generated Files after Build](#generated-files-after-build)
+    - [Browserlist](#browserlist)
+    - [Installation of Source Map Explorer](#installation-of-source-map-explorer)
+  - [Bundle Analysis](#bundle-analysis)
+    - [Before Optimization](#before-optimization)
+  - [Optimization 1: Browserlist Update](#optimization-1-browserlist-update)
+    - [After Optimization 1](#after-optimization-1)
+  - [Optimization 2: Removing Unwanted Packages](#optimization-2-removing-unwanted-packages)
+    - [After Optimization 2](#after-optimization-2)
+  - [Conclusion](#conclusion-1)
 
 
 
@@ -995,9 +1029,9 @@ Run the commands below in your terminal to build your app:
 ```
 $ git checkout -b gh-pages
 $ git push origin gh-pages
-$ npm install -g angular-cli-ghpages`
-$ ng build --prod --base-href https://[username].github.io/[repo]/`
-$ ngh --dir=dist/[project-name]`
+$ npm install -g angular-cli-ghpages
+$ ng build --prod --base-href https://[username].github.io/[repo]/
+$ ngh --dir=dist/[project-name]
 ```
 
 > Note: Make sure you put your “username”, “repo name” and the name of the project in place of “Project-name” in the commands above.
@@ -1014,3 +1048,268 @@ Visit the App Page:
 Visit the URL to your Angular app gh-pages, it is the same URL you created earlier on our terminal; https://UserName.github.io/RepoName/
 
 You should see your application running remotely, which means it has successfully been published on gh-pages.
+
+# **Lazy Loading**
+
+# Different Loading Strategies in Angular
+
+In Angular, various strategies exist for loading modules, each with its own benefits and use cases. Let's explore these strategies along with examples:
+
+## 1. Eager Loading
+
+Eager loading is the default method in Angular, where modules are loaded when the main application starts. All code from these modules is included in the main bundle, impacting the initial load time. This is suitable for small or commonly used modules.
+
+```typescript
+import { ProductsModule } from './products/products.module';
+
+@NgModule({
+  imports: [
+    ProductsModule, // Eager loading
+    // ...
+  ],
+  // ...
+})
+export class AppModule { }
+```
+
+## 2. Lazy Loading
+
+Lazy loading loads modules only when needed, typically when a user navigates to a specific route. This reduces the initial load time and improves performance. Lazy-loaded modules are packaged into separate bundles and loaded on-demand.
+
+```typescript
+const routes: Routes = [
+  { path: 'home', component: HomeComponent },
+  { path: 'products', loadChildren: () => import('./products/products.module').then(m => m.ProductsModule) },
+  // ...
+];
+```
+
+## 3. Preloading Strategies
+
+Preloading strategies determine how lazy-loaded modules load in the background after the main content loads. Two common preloading strategies are:
+
+### PreloadAllModules Strategy
+
+Preloads all lazy-loaded modules after the main content loads, improving navigation speed.
+
+```typescript
+@NgModule({
+  imports: [
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }),
+    // ...
+  ],
+  // ...
+})
+export class AppRoutingModule { }
+```
+
+### Custom Preloading Strategy
+
+Create a custom preloading strategy to selectively preload specific modules based on your application’s needs.
+
+```typescript
+export class SelectivePreloadingStrategy implements PreloadingStrategy {
+  preload(route: Route, load: () => Observable<any>): Observable<any> {
+    return route.data && route.data.preload ? load() : of(null);
+  }
+}
+
+@NgModule({
+  imports: [
+    RouterModule.forRoot(routes, {
+      preloadingStrategy: SelectivePreloadingStrategy, // Custom strategy
+    }),
+    // ...
+  ],
+  // ...
+})
+export class AppRoutingModule { }
+```
+
+## Understanding Lazy Loading
+
+Lazy loading is a design pattern that defers the loading of non-essential resources until they are needed. It significantly enhances the initial loading time of a web application, improving the overall user experience.
+
+### Benefits of Lazy Loading
+
+1. **Faster Initial Loading:** Reduces the time for users to start interacting with the application.
+2. **Reduced Data Usage:** Downloads fewer resources, crucial for mobile users.
+3. **Optimized Performance:** Helps avoid rendering bottlenecks for smoother operation.
+4. **Improved SEO:** Prioritizes loading essential content for search engine crawlers.
+
+## Implementation in Angular
+
+Angular provides built-in support for lazy loading through its routing module. Follow these steps:
+
+### Step 1: Setup Routes
+
+Define routes in `app-routing.module.ts` and specify the module to load lazily.
+
+```typescript
+const routes: Routes = [
+  { path: 'home', component: HomeComponent },
+  { path: 'lazy', loadChildren: () => import('./lazy/lazy.module').then(m => m.LazyModule) },
+  { path: '**', component: NotFoundComponent },
+];
+```
+
+### Step 2: Create a Lazy Module
+
+Create a separate module for the component(s) to load lazily.
+
+### Step 3: Routing within Lazy Module
+
+Inside the lazy module, define its own routing similarly to the main app routing.
+
+```typescript
+const routes: Routes = [
+  { path: '', component: LazyComponent },
+];
+```
+
+### Step 4: Use Lazy Components
+
+Use the lazy-loaded components within your application; Angular loads them only when respective routes are accessed.
+
+## Best Practices
+
+To maximize lazy loading benefits, follow these best practices:
+
+1. **Module Organization:** Create separate modules for features intended for lazy loading.
+2. **Route Configuration:** Define lazy-loaded modules in the `app-routing.module.ts` file.
+3. **Shared Modules:** Be cautious with shared modules in lazy-loaded modules; create feature-specific shared modules if needed.
+4. **Preloading:** Implement preloading to load some lazy-loaded modules in the background.
+5. **Lazy Loading Guards:** Implement guards for lazy-loaded routes.
+6. **Avoid Over-Lazy Loading:** Only lazy load modules that truly need it.
+7. **Testing:** Write tests for lazy-loaded components using Angular testing tools.
+8. **Monitoring and Performance Analysis:** Use tools like Lighthouse or Chrome DevTools for performance analysis.
+9. **Documentation and Collaboration:** Document your lazy loading strategy for team awareness.
+
+## Conclusion
+
+Lazy loading is a powerful technique for optimizing web application performance and user experience. By loading only necessary components when needed, developers can significantly reduce initial loading times, providing a smoother interaction for users. Angular's built-in routing module makes implementing lazy loading straightforward.
+
+Incorporate lazy loading into your Angular projects today to witness tangible benefits in application performance and user satisfaction.
+
+# **Optimize the Bundle Size**
+
+## **Optimize the Bundle Size with Bundle Analyzer**
+>For other frameworks (works for Angular as well)
+>https://www.npmjs.com/package/webpack-bundle-analyzer
+
+
+## **Optimize the Bundle Size using Source Map Explorer**
+
+> Recommended for Angular
+> src: https://mohammedfahimullah.medium.com/optimize-the-bundle-size-using-source-map-explorer-5e848850e578
+
+## Why?
+
+Modern web applications often rely on various third-party libraries, contributing to larger bundle sizes. This can impact the initial loading time of the application. To enhance performance, it's essential to reduce the bundle size.
+
+## Tools
+
+There are several tools available for analyzing bundle size. In this article, we'll focus on one of them:
+
+1. **Source Map Explorer**
+
+2. Webpack Bundle Analyzer
+
+We'll explore how to analyze bundle size using **Source Map Explorer**.
+
+## What is Source Map Explorer?
+
+Source Map Explorer determines the origin of each byte in your minified code, providing a treemap visualization to help debug code origins.
+
+## Why Source Map Explorer?
+
+- Recommended by the Google Team.
+- Widely used with 6 lakh weekly downloads.
+
+## Prerequisites
+
+Before diving into optimization, let's understand some basic concepts.
+
+### Generated Files after Build
+
+After executing the build command (`ng build --configuration=production`), two different bundles are generated:
+
+1. ES5 Bundle
+2. ES2015 Bundle
+
+The ES5 bundle supports legacy browsers, while the ES2015 bundle is for modern browsers.
+
+### Browserlist
+
+A configuration file specifying targeted browsers for application support. It excludes browsers without official support and defines the level of global market share. Differential loading generates ES5 and ES2015 bundles based on browser support.
+
+### Installation of Source Map Explorer
+
+```bash
+npm i source-map-explorer --save-dev
+```
+
+Add custom scripts to `package.json`:
+
+```json
+"scripts": {
+  "source-map-analyzer": "ng build --configuration=production && npm run source-map-explorer",
+  "source-map-explorer": "source-map-explorer dist/*.js"
+}
+```
+
+Run the command:
+
+```bash
+npm run source-map-analyzer
+```
+
+## Bundle Analysis
+
+After running the command, a browser will open, displaying a treemap visualization of generated bundles.
+
+### Before Optimization
+
+![Bundle Representation without Optimization](url_to_image_fig5)
+
+Total Bundle Size: 5.59MB
+
+Observation: External plugins occupy nearly 65% of the application.
+
+## Optimization 1: Browserlist Update
+
+All users of the application use the latest versions of Edge or Chrome. Update the `browserslist` file:
+
+```text
+"last 2 Chrome versions",
+"last 2 Edge versions",
+"not dead",
+"not IE 9-11"
+```
+
+After updating, no separate ES5 bundle is generated.
+
+### After Optimization 1
+
+![Bundle Representation after Optimization 1](url_to_image_fig8)
+
+Bundle Size: 2.38MB (Reduced from 5.59MB)
+
+## Optimization 2: Removing Unwanted Packages
+
+Remove unwanted packages, such as lottie and Moment JS. Consider alternatives for heavy packages.
+
+### After Optimization 2
+
+![Bundle Representation after Optimization 2](url_to_image_fig9)
+
+Bundle Size: 1.94MB (Reduced from 2.68MB)
+
+## Conclusion
+
+1. Update your `browserslist` file according to the targeted user browsers.
+2. Libraries contribute significantly to bundle size. Import packages only if necessary.
+3. Add devDependency packages to the `devDependencies` section of `package.json`.
+4. Remove unwanted packages.
+5. If a package is heavy, find alternatives (e.g., Moment JS).
+6. If no differential loading is needed, update your `browserslist.src` file.
