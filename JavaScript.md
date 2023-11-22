@@ -7,6 +7,9 @@
 ## MENÚ
 
 - [MENÚ](#menú)
+- [**call**](#call)
+- [**Apply**](#apply)
+- [**bind**](#bind)
 - [CALLBACK](#callback)
 - [PROMISES - Promesas en JavaScript](#promises---promesas-en-javascript)
   - [Creando una promesa](#creando-una-promesa)
@@ -23,6 +26,95 @@
   - [Uso de la Herencia](#uso-de-la-herencia)
 - [Conclusión](#conclusión)
 
+
+## **call**
+En JavaScript, la función `call` es un método que pertenece a todas las funciones y se utiliza para llamar a una función con un valor específico para el objeto al que pertenece. En otras palabras, te permite cambiar el contexto en el que una función es ejecutada.
+
+La sintaxis básica de `call` es la siguiente:
+
+```javascript
+funcion.call(thisArg, arg1, arg2, ...)
+```
+
+- `funcion`: La función a ser llamada.
+- `thisArg`: El valor que se utilizará como `this` dentro de la función `funcion`.
+- `arg1, arg2, ...`: Los argumentos que se pasarán a la función `funcion`.
+
+Aquí hay un ejemplo simple:
+
+```javascript
+function saludar() {
+  console.log(`Hola, ${this.nombre}!`);
+}
+
+const persona = {
+  nombre: 'Juan'
+};
+
+// Llamando a la función saludar con el contexto de la persona usando call
+saludar.call(persona); // Imprimirá: Hola, Juan!
+```
+
+En este caso, `call` se utiliza para ejecutar la función `saludar`, pero se especifica que dentro de la función, la palabra clave `this` debe hacer referencia al objeto `persona`. Esto permite acceder a la propiedad `nombre` del objeto `persona` dentro de la función `saludar`.
+
+## **Apply**
+`apply` es otro método similar a `call` en JavaScript que se utiliza para invocar una función, pero en lugar de pasar los argumentos individualmente, toma un array de argumentos. La sintaxis básica de `apply` es la siguiente:
+
+```javascript
+funcion.apply(thisArg, [arg1, arg2, ...])
+```
+
+- `funcion`: La función a ser llamada.
+- `thisArg`: El valor que se utilizará como `this` dentro de la función `funcion`.
+- `[arg1, arg2, ...]`: Un array de argumentos que se pasarán a la función `funcion`.
+
+Aquí hay un ejemplo:
+
+```javascript
+function saludar(mensaje) {
+  console.log(`${mensaje}, ${this.nombre}!`);
+}
+
+const persona = {
+  nombre: 'Juan'
+};
+
+// Llamando a la función saludar con el contexto de la persona y argumentos usando apply
+saludar.apply(persona, ['Hola']); // Imprimirá: Hola, Juan!
+```
+
+En este ejemplo, la función `saludar` se llama con el contexto de `persona` y se le pasa el array `['Hola']` como argumento. La palabra clave `this` dentro de la función hace referencia al objeto `persona`, y el argumento 'Hola' se utiliza dentro de la cadena de salida.
+
+## **bind**
+`bind` es otro método en JavaScript que se utiliza para crear una nueva función con un valor específico para la palabra clave `this`, y opcionalmente, predefinir algunos de los argumentos. A diferencia de `call` y `apply`, `bind` no ejecuta la función de inmediato, sino que devuelve una nueva función que puedes llamar más tarde. La sintaxis básica de `bind` es la siguiente:
+
+```javascript
+nuevaFuncion = funcion.bind(thisArg, arg1, arg2, ...)
+```
+
+- `funcion`: La función original que se va a vincular.
+- `thisArg`: El valor que se utilizará como `this` dentro de la función `funcion`.
+- `arg1, arg2, ...`: Argumentos opcionales que se pueden predefinir en la nueva función.
+
+Aquí hay un ejemplo:
+
+```javascript
+function saludar(mensaje) {
+  console.log(`${mensaje}, ${this.nombre}!`);
+}
+
+const persona = {
+  nombre: 'Juan'
+};
+
+// Creando una nueva función saludar con el contexto de la persona
+const saludarAJuan = saludar.bind(persona, 'Hola');
+
+// Llamando a la nueva función
+saludarAJuan(); // Imprimirá: Hola, Juan!
+```
+
+En este ejemplo, `bind` se utiliza para crear una nueva función llamada `saludarAJuan`. Esta nueva función siempre tendrá el objeto `persona` como contexto (`this`) y el mensaje 'Hola' predefinido como argumento. Luego, se llama a la nueva función y se imprime el mensaje resultante. Es útil cuando se quiere fijar ciertos valores y usarlos más tarde, por ejemplo, en manejo de eventos o devolución de llamada.
 
 ## CALLBACK
 
