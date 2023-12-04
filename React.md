@@ -3,6 +3,14 @@
 [documentación oficial de React](https://reactjs.org/).
 
 - [Guía Rápida de React](#guía-rápida-de-react)
+  - [Comandos Básicos en YARN](#comandos-básicos-en-yarn)
+    - [Paso 1: Instalar Yarn](#paso-1-instalar-yarn)
+    - [Paso 2: Crear un nuevo proyecto con Vite](#paso-2-crear-un-nuevo-proyecto-con-vite)
+    - [Paso 3: Navegar al directorio del proyecto](#paso-3-navegar-al-directorio-del-proyecto)
+    - [Paso 4: Instalar dependencias](#paso-4-instalar-dependencias)
+    - [Paso 5: Iniciar el servidor de desarrollo](#paso-5-iniciar-el-servidor-de-desarrollo)
+    - [Paso 6: Comenzar a desarrollar](#paso-6-comenzar-a-desarrollar)
+    - [Paso 7: Construir la aplicación para producción](#paso-7-construir-la-aplicación-para-producción)
   - [Comandos Básicos en NPM](#comandos-básicos-en-npm)
     - [Instalación de React](#instalación-de-react)
     - [Iniciar la Aplicación](#iniciar-la-aplicación)
@@ -24,6 +32,58 @@
     - [`useState`](#usestate)
     - [`useEffect`](#useeffect)
 
+## Comandos Básicos en YARN
+
+Guía básica para comenzar un proyecto con React utilizando Yarn y Vite. Vite es un entorno de desarrollo rápido para proyectos basados en JavaScript, y Yarn es un administrador de paquetes que se utiliza para gestionar las dependencias del proyecto.
+
+### Paso 1: Instalar Yarn
+Si aún no tienes Yarn instalado, puedes hacerlo siguiendo las instrucciones en [la página oficial de Yarn](https://yarnpkg.com/getting-started/install).
+
+### Paso 2: Crear un nuevo proyecto con Vite
+Ejecuta los siguientes comandos en tu terminal para crear un nuevo proyecto con Vite:
+
+```bash
+yarn create @vitejs/app my-react-app --template react
+```
+
+Esto creará un nuevo directorio llamado `my-react-app` con una estructura de proyecto básica de React.
+
+### Paso 3: Navegar al directorio del proyecto
+Ve al directorio del proyecto recién creado:
+
+```bash
+cd my-react-app
+```
+
+### Paso 4: Instalar dependencias
+Instala las dependencias del proyecto utilizando Yarn:
+
+```bash
+yarn
+```
+
+### Paso 5: Iniciar el servidor de desarrollo
+Inicia el servidor de desarrollo para tu aplicación React:
+
+```bash
+yarn dev
+```
+
+Esto iniciará el servidor y podrás ver tu aplicación en `http://localhost:5173`.
+
+### Paso 6: Comenzar a desarrollar
+Abre tu editor de código favorito y comienza a editar los archivos en el directorio `src`. Puedes ver los cambios en tiempo real en tu navegador mientras desarrollas.
+
+### Paso 7: Construir la aplicación para producción
+Cuando estés listo para construir tu aplicación para producción, puedes ejecutar:
+
+```bash
+yarn build
+```
+
+Esto generará una carpeta `dist` que contiene los archivos optimizados para producción.
+
+¡Y eso es básicamente todo! Ahora tienes un nuevo proyecto React configurado con Yarn y Vite, listo para ser desarrollado y desplegado. Puedes personalizar tu aplicación según tus necesidades y explorar más sobre Vite y sus características en la [documentación oficial de Vite](https://vitejs.dev/).
 
 ## Comandos Básicos en NPM
 
