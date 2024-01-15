@@ -1,5 +1,60 @@
 
 ## Comparativa entre React y Angular en TypeScript
+- [Comparativa entre React y Angular en TypeScript](#comparativa-entre-react-y-angular-en-typescript)
+  - [1. Introducción:](#1-introducción)
+  - [2. Configuración del Proyecto:](#2-configuración-del-proyecto)
+    - [React:](#react)
+    - [Angular:](#angular)
+  - [3. Creación de Componentes en Angular y React con TypeScript:](#3-creación-de-componentes-en-angular-y-react-con-typescript)
+    - [Angular:](#angular-1)
+    - [React:](#react-1)
+  - [4. Manejo de Estado:](#4-manejo-de-estado)
+    - [React:](#react-2)
+    - [Angular:](#angular-2)
+    - [5. Renderizado:](#5-renderizado)
+      - [**React:**](#react-3)
+      - [**Angular:**](#angular-3)
+    - [6.  **Comunicación entre Componentes:**](#6--comunicación-entre-componentes)
+      - [**React:**](#react-4)
+      - [**Angular:**](#angular-4)
+  - [7. Manipulación del DOM](#7-manipulación-del-dom)
+    - [Angular: Uso de Directivas y Condicionales:](#angular-uso-de-directivas-y-condicionales)
+    - [React:](#react-5)
+  - [8. Routing y Navegación:](#8-routing-y-navegación)
+    - [React:](#react-6)
+    - [Angular:](#angular-5)
+  - [9. Manejo de Formularios:](#9-manejo-de-formularios)
+    - [React:](#react-7)
+    - [Angular:](#angular-6)
+  - [10 ### Directivas en Angular vs. React](#10--directivas-en-angular-vs-react)
+    - [**Angular:**](#angular-7)
+      - [1. **ngIf:**](#1-ngif)
+      - [2. **ngFor:**](#2-ngfor)
+      - [3. **ngStyle:**](#3-ngstyle)
+    - [**React:**](#react-8)
+      - [1. **Conditional Rendering:**](#1-conditional-rendering)
+      - [2. **Array.map:**](#2-arraymap)
+      - [3. **Inline Styles:**](#3-inline-styles)
+    - [**Comentarios:**](#comentarios)
+- [Ambos enfoques tienen sus ventajas y desventajas, y la elección entre Angular y React a menudo se reduce a las preferencias personales y los requisitos específicos del proyecto.](#ambos-enfoques-tienen-sus-ventajas-y-desventajas-y-la-elección-entre-angular-y-react-a-menudo-se-reduce-a-las-preferencias-personales-y-los-requisitos-específicos-del-proyecto)
+  - [11 Hooks en React y su Equivalente en Angular:](#11-hooks-en-react-y-su-equivalente-en-angular)
+  - [Hooks en React:](#hooks-en-react)
+    - [`useState`:](#usestate)
+    - [`useEffect`:](#useeffect)
+  - [Manejo de Estados en Angular:](#manejo-de-estados-en-angular)
+    - [Propiedades de la Clase:](#propiedades-de-la-clase)
+    - [Servicios para Compartir Estado:](#servicios-para-compartir-estado)
+  - [`useMemo` en React:](#usememo-en-react)
+  - [Uso Similar en Angular:](#uso-similar-en-angular)
+    - [**React: `useCallback`**](#react-usecallback)
+    - [**Angular: `ChangeDetectorRef` y `ngDoCheck`**](#angular-changedetectorref-y-ngdocheck)
+    - [**React: `React.memo`**](#react-reactmemo)
+    - [**Angular: `ChangeDetectionStrategy` y `ngDoCheck`**](#angular-changedetectionstrategy-y-ngdocheck)
+  - [12. Comparación de Performance:](#12-comparación-de-performance)
+    - [React:](#react-9)
+    - [Angular:](#angular-8)
+    - [Comparación General:](#comparación-general)
+  - [Conclusión:](#conclusión)
 
 ### 1. Introducción:
 
@@ -549,6 +604,7 @@ const MiComponente = () => {
 }
 ```
 
+
 ### Manejo de Estados en Angular:
 
 En Angular, el manejo de estados se realiza principalmente mediante propiedades de la clase del componente y servicios para compartir estados entre componentes. Aunque Angular no tiene algo directamente equivalente a los "hooks" de React, las propiedades de la clase y los servicios proporcionan formas efectivas de manejar el estado.
@@ -665,7 +721,147 @@ export class MiComponenteComponent {
 ```
 
 En este ejemplo, `cuadrado$` emitirá un nuevo valor solo cuando `numero$` cambie, lo que proporciona un comportamiento similar a `useMemo` en React. La elección entre estas opciones dependerá de las necesidades específicas de tu aplicación y del paradigma de programación reactiva en Angular.
+
 ---
+
+#### **React: `useCallback`**
+
+En React, `useCallback` se utiliza para memorizar funciones, evitando que se cree una nueva instancia de la función en cada renderizado. Esto es útil para evitar que los componentes hijos se vuelvan a renderizar innecesariamente.
+
+```jsx
+import React, { useState, useCallback } from 'react';
+
+function MyComponent() {
+  const [count, setCount] = useState(0);
+
+  // Uso de useCallback para memorizar la función
+  const handleClick = useCallback(() => {
+    console.log('Button clicked!');
+    setCount(count + 1);
+  }, [count]); // La función se vuelve a memorizar solo si 'count' cambia
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={handleClick}>Increment</button>
+    </div>
+  );
+}
+```
+
+En este ejemplo, `handleClick` se memoriza utilizando `useCallback`, por lo que solo se vuelve a crear cuando `count` cambia.
+
+#### **Angular: `ChangeDetectorRef` y `ngDoCheck`**
+
+En Angular, el equivalente a `useCallback` puede lograrse utilizando `ChangeDetectorRef` y el ciclo de vida del componente `ngDoCheck`. Aquí hay un ejemplo:
+
+```typescript
+import { Component, ChangeDetectorRef, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { MyService } from './my.service';
+import { Subscription } from 'rxjs';
+
+@Component({
+  selector: 'app-my-component',
+  template: `
+    <p>Count: {{ count }}</p>
+    <button (click)="handleClick()">Increment</button>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class MyComponent implements OnDestroy {
+  count: number;
+  private subscription: Subscription;
+
+  constructor(private myService: MyService, private cdr: ChangeDetectorRef) {
+    this.subscription = this.myService.count$.subscribe(count => {
+      this.count = count;
+      // Se marca el componente como dirty manualmente para verificar cambios
+      this.cdr.markForCheck();
+    });
+  }
+
+  handleClick() {
+    console.log('Button clicked!');
+    this.myService.increment();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+}
+```
+
+En este ejemplo, `ChangeDetectorRef` se utiliza para marcar el componente como dirty manualmente después de la actualización del estado. La estrategia de detección de cambios se establece en `OnPush` para mejorar el rendimiento.
+
+---
+Mis disculpas por la omisión. A continuación, se presenta la comparativa de `React.memo` en React y su equivalente en Angular:
+
+#### **React: `React.memo`**
+
+En React, `React.memo` se utiliza para memorizar componentes funcionales, evitando su re-renderizado innecesario cuando las propiedades no han cambiado.
+
+```jsx
+import React, { useState, memo } from 'react';
+
+// Componente funcional que se memoiza
+const MemoizedComponent = memo(({ name }) => {
+  console.log('Component rendered!');
+  return <p>Hello, {name}!</p>;
+});
+
+function MyComponent() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <MemoizedComponent name={`User ${count}`} />
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+  );
+}
+```
+
+En este ejemplo, `MemoizedComponent` se memoiza utilizando `React.memo`, por lo que solo se vuelve a renderizar si las propiedades (`name` en este caso) cambian.
+
+#### **Angular: `ChangeDetectionStrategy` y `ngDoCheck`**
+
+En Angular, se puede lograr un comportamiento similar utilizando `ChangeDetectionStrategy` y el ciclo de vida del componente `ngDoCheck`. Aquí hay un ejemplo:
+
+```typescript
+import { Component, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+
+@Component({
+  selector: 'app-memoized-component',
+  template: `
+    <p>Hello, {{ name }}!</p>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class MemoizedComponent {
+  @Input() name: string;
+}
+
+@Component({
+  selector: 'app-my-component',
+  template: `
+    <app-memoized-component [name]="userName"></app-memoized-component>
+    <button (click)="updateName()">Update Name</button>
+  `,
+})
+export class MyComponent {
+  userName = 'User 0';
+
+  updateName() {
+    const currentCount = parseInt(this.userName.split(' ')[1], 10) || 0;
+    this.userName = `User ${currentCount + 1}`;
+  }
+}
+```
+
+En este ejemplo, el componente `MemoizedComponent` utiliza `ChangeDetectionStrategy.OnPush` para mejorar el rendimiento y solo se vuelve a renderizar si las propiedades (`name` en este caso) cambian.
+
+---
+
 ### 12. Comparación de Performance:
 
 El rendimiento es un aspecto crucial al evaluar frameworks como React y Angular. A continuación, se presentan algunos detalles sobre cómo manejan el rendimiento.
