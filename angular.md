@@ -53,7 +53,6 @@
     - [Usando Renderer2](#usando-renderer2)
 - [**Forms**](#forms)
 - [**How to deploy Angular Apps to GitHub Pages (gh-pages)**](#how-to-deploy-angular-apps-to-github-pages-gh-pages)
-  - [***Method 2***](#method-2)
 - [**Lazy Loading**](#lazy-loading)
 - [Different Loading Strategies in Angular](#different-loading-strategies-in-angular)
   - [1. Eager Loading](#1-eager-loading)
@@ -961,22 +960,6 @@ The angular-cli-pages tool is used as a command on the angular CLI for the purpo
 
 > Note: This command will install angular-cli-ghpages globally in your operating system. You don’t have to install it again in case you need to use it in the future.
 
-- Step 3
-Run Build :
-
-Before you can deploy an Angular App, you need to build your angular app for use in production.
-
-This simply means configuring your app to be useable on a remote server like gh-pages.
-
-Usually, while creating your App, you had it running on your local server, but unfortunately the configuration for the local server will not serve the application when it is deployed on the gh-pages remote server, which is why you need to build your app.
-
-Run this command on your terminal to build the application:
-
-```
-$ ng build --base-href "https://GithubUserName.github.io/GithubRepoName/"
-```
-> Note: Make sure you put in your Github username in “GithubUserName” and the repository name you created in “GithubRepoName” sections of the URL.
-
 - Step 4
 Deploy to gh-pages:
 
@@ -985,8 +968,8 @@ After building the App, you can now deploy it to Github Pages using the angular-
 Run the command below in your terminal to deploy the App:
 
 
-`$ npx angular-cli-ghpages --dir=dist/Project-name`
-> Note: Make sure you put the name of the project in the place of “Project-name” in the command above.
+`$ ng deploy --base-href=/angular-app/`
+> Note: Make sure you put the name of the project in the place of “angular-app” in the command above.
 
 You can find this in the angular.json file under defaultProject which is at the bottom of the file. If the project name is wrong, your App will not work; so if you are seeing any errors, check the angular.json to confirm if you used the correct project name.
 
@@ -998,56 +981,6 @@ Visit the URL to your App gh-pages, it is the same URL you created earlier on ou
 You should see your application running remotely, which means it has successfully been published on gh-pages.
 
 
-## ***Method 2***
-Below is the second method for deploying an Angular App to GitHub pages.
-
-- Step 1
-Create your Github Repository:
-
-The first thing to do if you want to deploy your Angular App on Github pages is to create a repo for your project.
-
-After creating the repo, commit all your changes and push your project files to the repository you have created.
-
-- Step 2
-Create a gh-pages branch on your local machine:
-
-You need to create a gh-pages branch from your master branch on your computer and checkout to the branch.
-
-Run the command below in your terminal to create a gh-pages branch:
-```
-$ git branch gh-pages
-$ git checkout gh-pages
-```
-
-- Step 3
-Build your App:
-
-Checkout out to your gh-pages branch and build your Angular app in this branch.
-
-Run the commands below in your terminal to build your app:
-
-```
-$ git checkout -b gh-pages
-$ git push origin gh-pages
-$ npm install -g angular-cli-ghpages
-$ ng build --prod --base-href https://[username].github.io/[repo]/
-$ ngh --dir=dist/[project-name]
-```
-
-> Note: Make sure you put your “username”, “repo name” and the name of the project in place of “Project-name” in the commands above.
-
-You can find this in the angular.json file under defaultProject which is at the bottom of the file. If the project name is wrong, your App will not work; so if you are seeing any errors, check the angular.json to confirm if you used the correct project name.
-
-** You only need to set the “--base-href” flag once, next time you make changes and build the project you can simply run:
-
-`$ ng build`
-
-- Step 4
-Visit the App Page:
-
-Visit the URL to your Angular app gh-pages, it is the same URL you created earlier on our terminal; https://UserName.github.io/RepoName/
-
-You should see your application running remotely, which means it has successfully been published on gh-pages.
 
 # **Lazy Loading**
 
